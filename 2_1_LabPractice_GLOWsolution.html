@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Prof.&nbsp;F.San Segundo, Prof.&nbsp;V.Varo">
+
+<title>Laboratory practice 2_1. Classification</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="2_1_LabPractice_GLOWsolution_files/libs/clipboard/clipboard.min.js"></script>
+<script src="2_1_LabPractice_GLOWsolution_files/libs/quarto-html/quarto.js"></script>
+<script src="2_1_LabPractice_GLOWsolution_files/libs/quarto-html/popper.min.js"></script>
+<script src="2_1_LabPractice_GLOWsolution_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="2_1_LabPractice_GLOWsolution_files/libs/quarto-html/anchor.min.js"></script>
+<link href="2_1_LabPractice_GLOWsolution_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="2_1_LabPractice_GLOWsolution_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="2_1_LabPractice_GLOWsolution_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="2_1_LabPractice_GLOWsolution_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="2_1_LabPractice_GLOWsolution_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#import-the-dataset" id="toc-import-the-dataset" class="nav-link active" data-scroll-target="#import-the-dataset">Import the Dataset</a></li>
+  <li><a href="#remove-unused-columns-from-the-dataset" id="toc-remove-unused-columns-from-the-dataset" class="nav-link" data-scroll-target="#remove-unused-columns-from-the-dataset">Remove Unused Columns from the Dataset</a></li>
+  <li><a href="#preprocessing-pipeline" id="toc-preprocessing-pipeline" class="nav-link" data-scroll-target="#preprocessing-pipeline">Preprocessing Pipeline</a>
+  <ul class="collapse">
+  <li><a href="#applying-the-preprocessing-pipeline-to-the-test-set" id="toc-applying-the-preprocessing-pipeline-to-the-test-set" class="nav-link" data-scroll-target="#applying-the-preprocessing-pipeline-to-the-test-set">Applying the Preprocessing Pipeline to the Test Set</a></li>
+  </ul></li>
+  <li><a href="#optional-exercise.-dealing-with-imbalance." id="toc-optional-exercise.-dealing-with-imbalance." class="nav-link" data-scroll-target="#optional-exercise.-dealing-with-imbalance.">Optional Exercise. Dealing with Imbalance.</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="2_1_LabPractice_GLOWsolution.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Laboratory practice 2_1. Classification</h1>
+<p class="subtitle lead">Solution to Preprocessing the GLOW Dataset</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Prof.&nbsp;F.San Segundo, Prof.&nbsp;V.Varo </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="import-the-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="import-the-dataset">Import the Dataset</h3>
+<p>We begin by importing the base libraries</p>
+<div class="cell" data-execution_count="167">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mltools <span class="im">import</span> classification_tools <span class="im">as</span> CT</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mltools <span class="im">import</span> model_tools <span class="im">as</span> MT</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+<p>Upon examining the file we see that the separator is a tab (indicated by <code>\t</code> below) and there is a header line. There are rows of data in the file.Taking that into account we read the file:</p>
+<div class="cell" data-execution_count="168">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Load file --------------------------------------------</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span>  pd.read_csv(<span class="st">"~/code/MLMIC2024/data/GLOW/GLOW500.txt"</span>, sep<span class="op">=</span><span class="st">"</span><span class="ch">\t</span><span class="st">"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.iloc[<span class="dv">0</span>:<span class="dv">5</span>, <span class="dv">0</span>:<span class="dv">8</span>])</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.columns)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   SUB_ID  SITE_ID  PHY_ID  PRIORFRAC  AGE  WEIGHT  HEIGHT       BMI
+0       1        1      14          0   62    70.3     158  28.16055
+1       2        4     284          0   65    87.1     160  34.02344
+2       3        6     305          1   88    50.8     157  20.60936
+3       4        6     309          0   82    62.1     160  24.25781
+4       5        1      37          0   61    68.0     152  29.43213
+Index(['SUB_ID', 'SITE_ID', 'PHY_ID', 'PRIORFRAC', 'AGE', 'WEIGHT', 'HEIGHT',
+       'BMI', 'PREMENO', 'MOMFRAC', 'ARMASSIST', 'SMOKE', 'RATERISK',
+       'FRACSCORE', 'FRACTURE'],
+      dtype='object')</code></pre>
+</div>
+</div>
+<hr>
+<p>Immediately after the import, check the basic information for resulting dataframe:</p>
+<div class="cell" data-execution_count="169">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 500 entries, 0 to 499
+Data columns (total 15 columns):
+ #   Column     Non-Null Count  Dtype  
+---  ------     --------------  -----  
+ 0   SUB_ID     500 non-null    int64  
+ 1   SITE_ID    500 non-null    int64  
+ 2   PHY_ID     500 non-null    int64  
+ 3   PRIORFRAC  500 non-null    int64  
+ 4   AGE        500 non-null    int64  
+ 5   WEIGHT     500 non-null    float64
+ 6   HEIGHT     500 non-null    int64  
+ 7   BMI        500 non-null    float64
+ 8   PREMENO    500 non-null    int64  
+ 9   MOMFRAC    500 non-null    int64  
+ 10  ARMASSIST  500 non-null    int64  
+ 11  SMOKE      500 non-null    int64  
+ 12  RATERISK   500 non-null    int64  
+ 13  FRACSCORE  500 non-null    int64  
+ 14  FRACTURE   500 non-null    int64  
+dtypes: float64(2), int64(13)
+memory usage: 58.7 KB</code></pre>
+</div>
+</div>
+<p>Note that there are no <em>apparent</em> missing values. We insist in the non <em>apparent</em> status of missing data right now, beacuse in some cases you will discover downstream in the analysis that some missing values were encoded e.g.&nbsp;with a numerical code (we often meet codes such as 99999999 in some business contexts) and therefore they will escape this preliminary inspection.</p>
+</section>
+<section id="remove-unused-columns-from-the-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="remove-unused-columns-from-the-dataset">Remove Unused Columns from the Dataset</h3>
+<p>*Index variables should be removed before proceeding with the analysis. In our dataset this is the clearly case for the first column <code>SUB_ID</code> which is a patien identifier (a row number). The <code>SITE_ID</code> and <code>PHY_ID</code> are also identifiers, but it is not so clear how to deal with them at this point. Let us wait until we see how many different values they take and then we will decide wheter we keep them.</p>
+<p>We have been requested in the statement to also drop the <code>FRACSCORE</code> column, so we do it now.</p>
+<div class="cell" data-execution_count="170">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df.drop(columns<span class="op">=</span>[<span class="st">"SUB_ID"</span>, <span class="st">"FRACSCORE"</span>], inplace<span class="op">=</span><span class="va">True</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Note about BMI:</strong> the BMI (body mass index) is usually defined to be <span class="math display">\[\dfrac{\text{weight (in kg)}}{\text{height (in meters)}^2}\]</span> Therefore this column of the table is not an independent measure, it has been computed from the measured variables. We can confirm it with the following computation. The result indictes that the differences between the BMI column in the table are probably due to unit conversions and rounding.</p>
+<div class="cell" data-execution_count="171">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>np.<span class="bu">max</span>(np.<span class="bu">abs</span>((df.BMI <span class="op">-</span> (df.WEIGHT <span class="op">/</span> (df.HEIGHT <span class="op">/</span> <span class="dv">100</span>)<span class="op">**</span><span class="dv">2</span>))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="171">
+<pre><code>7.163056949366364e-06</code></pre>
+</div>
+</div>
+<p>We could argue that this as a reason to drop the column or we can keep it and see if it helps increase the predictive performance of the model (since the experts hace considered it worth including in the table). We keep it for now, but the discussion about BMI is continued below.</p>
+<p>Anyway, after dropping some columns always check the result:</p>
+<div class="cell" data-execution_count="172">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="172">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">SITE_ID</th>
+<th data-quarto-table-cell-role="th">PHY_ID</th>
+<th data-quarto-table-cell-role="th">PRIORFRAC</th>
+<th data-quarto-table-cell-role="th">AGE</th>
+<th data-quarto-table-cell-role="th">WEIGHT</th>
+<th data-quarto-table-cell-role="th">HEIGHT</th>
+<th data-quarto-table-cell-role="th">BMI</th>
+<th data-quarto-table-cell-role="th">PREMENO</th>
+<th data-quarto-table-cell-role="th">MOMFRAC</th>
+<th data-quarto-table-cell-role="th">ARMASSIST</th>
+<th data-quarto-table-cell-role="th">SMOKE</th>
+<th data-quarto-table-cell-role="th">RATERISK</th>
+<th data-quarto-table-cell-role="th">FRACTURE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>1</td>
+<td>14</td>
+<td>0</td>
+<td>62</td>
+<td>70.3</td>
+<td>158</td>
+<td>28.16055</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>4</td>
+<td>284</td>
+<td>0</td>
+<td>65</td>
+<td>87.1</td>
+<td>160</td>
+<td>34.02344</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>6</td>
+<td>305</td>
+<td>1</td>
+<td>88</td>
+<td>50.8</td>
+<td>157</td>
+<td>20.60936</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>6</td>
+<td>309</td>
+<td>0</td>
+<td>82</td>
+<td>62.1</td>
+<td>160</td>
+<td>24.25781</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>1</td>
+<td>37</td>
+<td>0</td>
+<td>61</td>
+<td>68.0</td>
+<td>152</td>
+<td>29.43213</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="preproc-step-2-choose-proper-type-names-and-encoding-for-the-variables" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="preproc-step-2-choose-proper-type-names-and-encoding-for-the-variables">2 Preproc; Step 2 : Choose proper type, names and encoding for the variables</h2>
+<p>We use <code>nunique</code> to see the number of different values for each variable</p>
+<div class="cell" data-execution_count="173">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df.nunique()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="173">
+<pre><code>SITE_ID        6
+PHY_ID       127
+PRIORFRAC      2
+AGE           36
+WEIGHT       128
+HEIGHT        34
+BMI          409
+PREMENO        2
+MOMFRAC        2
+ARMASSIST      2
+SMOKE          2
+RATERISK       3
+FRACTURE       2
+dtype: int64</code></pre>
+</div>
+</div>
+<p>The result shows that <code>PHY_ID</code> is probably best considered as an identifier with little predictive worth (a ratio of 500/127 patients per doctor is too low to be of any use). Thus it will be dropped:</p>
+<div class="cell" data-execution_count="174">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df.drop(columns<span class="op">=</span>[<span class="st">"PHY_ID"</span>], inplace<span class="op">=</span><span class="va">True</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>On the other hand, <code>SITE_ID</code> only takes six values, so it is probably best kept as a factor. Along with <code>PRIORFRAC</code>, <code>PREMENO</code>, <code>MOMFRAC</code>, <code>ARMASSIST</code>, <code>SMOKE</code> and <code>RATERISK</code> that should all be considered input factors. Think about the meaning of each of this variables and discuss with yourself if they appear to be legitimate factors, useful to define groups in this dataset that can help us predict the output. The remaining inputs <code>AGE</code>, <code>WEIGHT</code>, <code>HEIGHT</code>, <code>BMI</code> are best kept as numerical inputs.</p>
+<p>We could discuss if we should consider <code>RATERISK</code> as an ordered factor, but with only three levels there is little to be gained in doing that.</p>
+<hr>
+<p>Next we set the type of all categorical variables including the output:</p>
+<div class="cell" data-execution_count="175">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> <span class="st">'FRACTURE'</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>cat_inputs <span class="op">=</span> [<span class="st">"SITE_ID"</span>, <span class="st">"PRIORFRAC"</span>, <span class="st">"PREMENO"</span>, <span class="st">"MOMFRAC"</span>, </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>              <span class="st">"ARMASSIST"</span>, <span class="st">"SMOKE"</span>, <span class="st">"RATERISK"</span>]</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>df[cat_inputs <span class="op">+</span> [output]] <span class="op">=</span> df[cat_inputs <span class="op">+</span> [output]].astype(<span class="st">"category"</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>df.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 500 entries, 0 to 499
+Data columns (total 12 columns):
+ #   Column     Non-Null Count  Dtype   
+---  ------     --------------  -----   
+ 0   SITE_ID    500 non-null    category
+ 1   PRIORFRAC  500 non-null    category
+ 2   AGE        500 non-null    int64   
+ 3   WEIGHT     500 non-null    float64 
+ 4   HEIGHT     500 non-null    int64   
+ 5   BMI        500 non-null    float64 
+ 6   PREMENO    500 non-null    category
+ 7   MOMFRAC    500 non-null    category
+ 8   ARMASSIST  500 non-null    category
+ 9   SMOKE      500 non-null    category
+ 10  RATERISK   500 non-null    category
+ 11  FRACTURE   500 non-null    category
+dtypes: category(8), float64(2), int64(2)
+memory usage: 20.7 KB</code></pre>
+</div>
+</div>
+<hr>
+<p>Similarly we identify the set of numerical inputs and create an index of all input variables.</p>
+<div class="cell" data-execution_count="176">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>inputs <span class="op">=</span> df.columns.drop(output)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>num_inputs <span class="op">=</span> inputs.difference(cat_inputs).tolist()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Index(['SITE_ID', 'PRIORFRAC', 'AGE', 'WEIGHT', 'HEIGHT', 'BMI', 'PREMENO',
+       'MOMFRAC', 'ARMASSIST', 'SMOKE', 'RATERISK'],
+      dtype='object')</code></pre>
+</div>
+</div>
+<hr>
+<p>One Hot Encoding of the Categorical Inputs. We use this one hot encoding and add the resulting new columns to the DataFrame, also keeping the columns with previous versions of the categorical inputs.</p>
+<div class="cell" data-execution_count="177">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>ohe <span class="op">=</span> OneHotEncoder(sparse_output<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>ohe_result <span class="op">=</span> ohe.fit_transform(df[cat_inputs])</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>ohe_inputs <span class="op">=</span> [ohe.categories_[k].tolist() <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(cat_inputs))]</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>ohe_inputs <span class="op">=</span> [cat_inputs[k] <span class="op">+</span> <span class="st">"_"</span> <span class="op">+</span> <span class="bu">str</span>(a) <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(cat_inputs)) <span class="cf">for</span> a <span class="kw">in</span> ohe_inputs[k]]</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>ohe_df <span class="op">=</span> pd.DataFrame(ohe_result, columns<span class="op">=</span>ohe_inputs)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>df[ohe_inputs] <span class="op">=</span> ohe_df</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>df.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 500 entries, 0 to 499
+Data columns (total 31 columns):
+ #   Column       Non-Null Count  Dtype   
+---  ------       --------------  -----   
+ 0   SITE_ID      500 non-null    category
+ 1   PRIORFRAC    500 non-null    category
+ 2   AGE          500 non-null    int64   
+ 3   WEIGHT       500 non-null    float64 
+ 4   HEIGHT       500 non-null    int64   
+ 5   BMI          500 non-null    float64 
+ 6   PREMENO      500 non-null    category
+ 7   MOMFRAC      500 non-null    category
+ 8   ARMASSIST    500 non-null    category
+ 9   SMOKE        500 non-null    category
+ 10  RATERISK     500 non-null    category
+ 11  FRACTURE     500 non-null    category
+ 12  SITE_ID_1    500 non-null    float64 
+ 13  SITE_ID_2    500 non-null    float64 
+ 14  SITE_ID_3    500 non-null    float64 
+ 15  SITE_ID_4    500 non-null    float64 
+ 16  SITE_ID_5    500 non-null    float64 
+ 17  SITE_ID_6    500 non-null    float64 
+ 18  PRIORFRAC_0  500 non-null    float64 
+ 19  PRIORFRAC_1  500 non-null    float64 
+ 20  PREMENO_0    500 non-null    float64 
+ 21  PREMENO_1    500 non-null    float64 
+ 22  MOMFRAC_0    500 non-null    float64 
+ 23  MOMFRAC_1    500 non-null    float64 
+ 24  ARMASSIST_0  500 non-null    float64 
+ 25  ARMASSIST_1  500 non-null    float64 
+ 26  SMOKE_0      500 non-null    float64 
+ 27  SMOKE_1      500 non-null    float64 
+ 28  RATERISK_1   500 non-null    float64 
+ 29  RATERISK_2   500 non-null    float64 
+ 30  RATERISK_3   500 non-null    float64 
+dtypes: category(8), float64(21), int64(2)
+memory usage: 94.9 KB</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="preprocessing-step-3-check-out-the-missing-values" class="level1 unnumbered unlisted">
+<h1 class="unnumbered unlisted">2 Preprocessing, Step 3: Check out the missing values</h1>
+<p>We saw before that there are no <em>apparent</em> missing values. Let us check that again (to see that we have not lost any value, this is important when preprocessing gets more involved, with table melting, etc.). How does this work, what is the purpose of the second sum?</p>
+<div class="cell" data-execution_count="178">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df.isnull().<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">0</span>).<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="178">
+<pre><code>0</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="preprocessing-step-4-split-the-dataset-into-training-and-test-sets" class="level1 unnumbered unlisted">
+<h1 class="unnumbered unlisted">2 Preprocessing, Step 4: Split the dataset into Training and Test Sets</h1>
+<p>We give standard names to the input and output variables as follows:</p>
+<div class="cell" data-execution_count="179">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df.drop(columns<span class="op">=</span>output)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> df[output]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And then proceed to the actual (stratified) splitting:</p>
+<div class="cell" data-execution_count="180">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>XTR, XTS, YTR, YTS <span class="op">=</span> train_test_split(X, Y,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                                      test_size<span class="op">=</span><span class="fl">0.2</span>,  <span class="co"># percentage preserved as test data</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>                                      random_state<span class="op">=</span><span class="dv">1</span>, <span class="co"># seed for replication</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>                                      stratify <span class="op">=</span> Y)   <span class="co"># Preserves distribution of y</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="preproc-step-5-plot-the-numeric-variables-in-training-data-and-check-out-for-outliers" class="level1 unnumbered unlisted">
+<h1 class="unnumbered unlisted">2 Preproc; Step 5: Plot the numeric variables in training data and check out for outliers</h1>
+<p>Let us begin by plotting boxplots of the numeric inputs:</p>
+<div class="cell" data-execution_count="181">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>XTR_numeric_boxplots <span class="op">=</span> XTR[num_inputs].plot.box(subplots<span class="op">=</span><span class="va">True</span>, </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                                            layout<span class="op">=</span>(<span class="dv">1</span>, <span class="bu">len</span>(num_inputs)), </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                                            sharex<span class="op">=</span><span class="va">False</span>, sharey<span class="op">=</span><span class="va">False</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2_1_LabPractice_GLOWsolution_files/figure-html/cell-16-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>There are no outliers of concern in <code>AGE</code>, <code>BMI</code> or <code>WEIGHT</code> as the outliers detected appear to be just part of the long tail of skewed distributions. There are however some outliers in <code>HEIGHT</code>. Since these is human data (remember, women over 55 years of age) values of height around 130 cm are intriguing. We can plot <code>HEIGHT</code> vs <code>WEIGHT</code> to explore this further</p>
+<div class="cell" data-execution_count="182">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(XTR, x<span class="op">=</span><span class="st">'WEIGHT'</span>, y <span class="op">=</span> <span class="st">'HEIGHT'</span>, ax<span class="op">=</span>ax)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="182">
+<pre><code>&lt;Axes: xlabel='WEIGHT', ylabel='HEIGHT'&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2_1_LabPractice_GLOWsolution_files/figure-html/cell-17-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The plot suggests that it is ok to drop the outliers in <code>HEIGHT</code>. We run the following function, described in this session’s notebook (we have commented some lines of code to suppress the plots, we do not need them now):</p>
+<div class="cell" data-execution_count="183">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.cbook <span class="im">import</span> boxplot_stats</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> explore_outliers(df, num_vars):</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># fig, axes = plt.subplots(nrows=len(num_vars), ncols=1, figsize=(7, 3), sharey=False, sharex=False)</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># fig.tight_layout()</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    outliers_df <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(num_vars)):</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>        var <span class="op">=</span> num_vars[k]</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># sns.boxplot(df, x=var , ax=axes[k])</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>        outliers_df[var] <span class="op">=</span> boxplot_stats(df[var])[<span class="dv">0</span>][<span class="st">"fliers"</span>]</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>        out_pos <span class="op">=</span> np.where(df[var].isin(outliers_df[var]))[<span class="dv">0</span>].tolist() </span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>        out_idx <span class="op">=</span> [df[var].index.tolist()[ k ] <span class="cf">for</span> k <span class="kw">in</span> out_pos]</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>        outliers_df[var] <span class="op">=</span> {<span class="st">"values"</span>: outliers_df[var], </span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"positions"</span>: out_pos, </span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"indices"</span>: out_idx}</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> outliers_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>and now use the result to drop the outliers in <code>HEIGHT</code>(we also drop the corresponding output values).</p>
+<div class="cell" data-execution_count="184">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>out_XTR <span class="op">=</span> explore_outliers(XTR, num_inputs)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>out_XTR_indices <span class="op">=</span> <span class="bu">set</span>([k <span class="cf">for</span> var <span class="kw">in</span> [<span class="st">'HEIGHT'</span>] <span class="cf">for</span> k <span class="kw">in</span> out_XTR[var][<span class="st">"indices"</span>] ])</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>XTR.drop(out_XTR_indices, axis<span class="op">=</span><span class="dv">0</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Also make sure to remove the corresponding output values in `YTR`.</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>YTR.drop(out_XTR_indices, axis<span class="op">=</span><span class="dv">0</span>, inplace<span class="op">=</span><span class="va">True</span>) <span class="co"># Always keep in mind that you need to keep `YTR` updated.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If yow run <code>explore_outliers(XTR, num_inputs)</code> you will see that those outliers have indeed been dropped.</p>
+<p><strong>REMARK:</strong></p>
+<p>The analysis of outliers and the EDA below give us another opportunity to think about missing data. Check the ranges of the variables and for anything else that stands out as unexpected, because sometimes that is the only way to spot previously undetected missing values.</p>
+</section>
+<section id="preproc-step-6-eda-and-feature-selection-or-engineering.-pipelines." class="level1 unnumbered unlisted">
+<h1 class="unnumbered unlisted">2 Preproc; Step 6: EDA and Feature selection or engineering. Pipelines.</h1>
+<p>We begin using the <code>describe</code> function to obtain numerical summaries for the variables. For numeric inputs:</p>
+<div class="cell" data-execution_count="185">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>XTR[num_inputs].describe().transpose()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="185">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">count</th>
+<th data-quarto-table-cell-role="th">mean</th>
+<th data-quarto-table-cell-role="th">std</th>
+<th data-quarto-table-cell-role="th">min</th>
+<th data-quarto-table-cell-role="th">25%</th>
+<th data-quarto-table-cell-role="th">50%</th>
+<th data-quarto-table-cell-role="th">75%</th>
+<th data-quarto-table-cell-role="th">max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">AGE</td>
+<td>395.0</td>
+<td>68.308861</td>
+<td>8.937220</td>
+<td>55.00000</td>
+<td>60.00000</td>
+<td>67.00000</td>
+<td>76.000000</td>
+<td>90.00000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">BMI</td>
+<td>395.0</td>
+<td>27.644980</td>
+<td>5.943626</td>
+<td>14.87637</td>
+<td>23.38577</td>
+<td>26.36709</td>
+<td>30.896355</td>
+<td>49.08241</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">HEIGHT</td>
+<td>395.0</td>
+<td>161.440506</td>
+<td>5.696947</td>
+<td>148.00000</td>
+<td>157.00000</td>
+<td>162.00000</td>
+<td>165.000000</td>
+<td>176.00000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">WEIGHT</td>
+<td>395.0</td>
+<td>72.163038</td>
+<td>16.405359</td>
+<td>39.90000</td>
+<td>60.30000</td>
+<td>68.90000</td>
+<td>81.600000</td>
+<td>127.00000</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>For input factors we obtain the mode and its frequency:</p>
+<div class="cell" data-execution_count="186">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>XTR[cat_inputs].describe().transpose()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="186">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">count</th>
+<th data-quarto-table-cell-role="th">unique</th>
+<th data-quarto-table-cell-role="th">top</th>
+<th data-quarto-table-cell-role="th">freq</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">SITE_ID</td>
+<td>395</td>
+<td>6</td>
+<td>5</td>
+<td>95</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">PRIORFRAC</td>
+<td>395</td>
+<td>2</td>
+<td>0</td>
+<td>299</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">PREMENO</td>
+<td>395</td>
+<td>2</td>
+<td>0</td>
+<td>320</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">MOMFRAC</td>
+<td>395</td>
+<td>2</td>
+<td>0</td>
+<td>346</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ARMASSIST</td>
+<td>395</td>
+<td>2</td>
+<td>0</td>
+<td>244</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">SMOKE</td>
+<td>395</td>
+<td>2</td>
+<td>0</td>
+<td>367</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">RATERISK</td>
+<td>395</td>
+<td>3</td>
+<td>2</td>
+<td>152</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Nothing looks surprising or unexpected in these tables, so we keep believing that the training set contains no missing data.</p>
+<p>Next we draw a pairplot to explore the distribution and relations between those variables.</p>
+<div class="cell" data-execution_count="187">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>sns.set_style(<span class="st">"white"</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>plt_df <span class="op">=</span> XTR[num_inputs].copy()</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>plt_df[<span class="st">"YTR"</span>] <span class="op">=</span> YTR</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>sns.pairplot(plt_df, hue<span class="op">=</span><span class="st">"YTR"</span>, corner<span class="op">=</span><span class="va">True</span>, height<span class="op">=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2_1_LabPractice_GLOWsolution_files/figure-html/cell-22-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The pairplot reveals a clear pattern that involves <code>WEIGHT</code> and <code>BMI</code>. This comes as no surprise, since as previously discussed <code>BMI</code> is a derived quantity and taking into account the limited range of human heights (around 1.6). In particular, keeping <code>BMI</code> in the dataset seems to be of little use for linear models. We will come back to this when analyzing correlation.</p>
+<p>Conditioning on the output it seems that <code>AGE</code> could be a variable of interest to separate both classes. But we will deal with this when we come to modeling. The rest of the scatterplots show no particular patterns. The density plots in the diagonal suggest that there is a certain amount of (right) ske in all of them. We can explore this further plotting the unconditioned densities:</p>
+<div class="cell" data-execution_count="188">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="bu">len</span>(num_inputs))  <span class="co"># create figure and axes</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col, ax <span class="kw">in</span> <span class="bu">zip</span>(num_inputs, axes):  <span class="co"># boxplot for each factor inpput</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    sns.kdeplot(data<span class="op">=</span>XTR, x <span class="op">=</span> col, ax<span class="op">=</span>ax) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2_1_LabPractice_GLOWsolution_files/figure-html/cell-23-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>We will apply a BoxCox power transformation to bring these variables closer to the normal distribution. You can find the sklearn documentation for this transfomer here:<br>
+<a href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.power_transform.html">https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.power_transform.html</a></p>
+<p>Now we make parallel boxplots for each combination of a numerical input and a factor input.</p>
+<div class="cell" data-execution_count="189">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> numVar <span class="kw">in</span> num_inputs: </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Analyzing the relation between factor inputs and"</span>, numVar)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="bu">len</span>(cat_inputs) <span class="op">&gt;</span> <span class="dv">1</span>):   </span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>        fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="bu">len</span>(cat_inputs))  <span class="co"># create figure and axes</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> col, ax <span class="kw">in</span> <span class="bu">zip</span>(cat_inputs, axes):  <span class="co"># boxplot for each factor inpput</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>            sns.boxplot(data<span class="op">=</span>XTR, x <span class="op">=</span> col, y <span class="op">=</span> numVar, ax<span class="op">=</span>ax) </span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>: <span class="co"># the special case of a single input factor</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>        fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>        sns.boxplot(data<span class="op">=</span>XTR, x <span class="op">=</span> cat_inputs[<span class="dv">0</span>], y <span class="op">=</span> numVar, ax<span class="op">=</span>ax)</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set subplot margins</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    plt.subplots_adjust(left<span class="op">=</span><span class="fl">0.9</span>, bottom<span class="op">=</span><span class="fl">0.4</span>, right<span class="op">=</span><span class="dv">2</span>, top<span class="op">=</span><span class="dv">1</span>, wspace<span class="op">=</span><span class="dv">1</span>, hspace<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analyzing the relation between factor inputs and AGE
+Analyzing the relation between factor inputs and BMI
+Analyzing the relation between factor inputs and HEIGHT
+Analyzing the relation between factor inputs and WEIGHT</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2_1_LabPractice_GLOWsolution_files/figure-html/cell-24-output-2.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;Figure size 100x100 with 0 Axes&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2_1_LabPractice_GLOWsolution_files/figure-html/cell-24-output-4.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;Figure size 100x100 with 0 Axes&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2_1_LabPractice_GLOWsolution_files/figure-html/cell-24-output-6.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;Figure size 100x100 with 0 Axes&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="2_1_LabPractice_GLOWsolution_files/figure-html/cell-24-output-8.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;Figure size 100x100 with 0 Axes&gt;</code></pre>
+</div>
+</div>
+<p>Looking through all these plots you will notice that there are big overlaps between the boxes in all the plots. Therefore, knowing the value of a numerical variable does not seem to provide enough information about any of the input factors.</p>
+<p>Let us now look at the <strong>correlation</strong> matrix</p>
+<div class="cell" data-execution_count="190">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>XTR[num_inputs].corr()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="190">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">AGE</th>
+<th data-quarto-table-cell-role="th">BMI</th>
+<th data-quarto-table-cell-role="th">HEIGHT</th>
+<th data-quarto-table-cell-role="th">WEIGHT</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">AGE</td>
+<td>1.000000</td>
+<td>-0.252758</td>
+<td>-0.169126</td>
+<td>-0.287704</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">BMI</td>
+<td>-0.252758</td>
+<td>1.000000</td>
+<td>0.021322</td>
+<td>0.949343</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">HEIGHT</td>
+<td>-0.169126</td>
+<td>0.021322</td>
+<td>1.000000</td>
+<td>0.327358</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">WEIGHT</td>
+<td>-0.287704</td>
+<td>0.949343</td>
+<td>0.327358</td>
+<td>1.000000</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>It confirms a very strong correlation between <code>WEIGHT</code> and <code>BMI</code>. Normally we would use the rest of the correlation matrix to decide which of the two we keep. But in this case <code>BMI</code> is a derived column so we prefer to keep the directly observed data and we will drop <code>BMI</code>.</p>
+<div class="cell" data-execution_count="191">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>XTR.drop(columns<span class="op">=</span><span class="st">"BMI"</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>num_inputs.remove(<span class="st">"BMI"</span>) <span class="co"># Keep the list of inputs updated </span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>XTR.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+Int64Index: 395 entries, 184 to 454
+Data columns (total 29 columns):
+ #   Column       Non-Null Count  Dtype   
+---  ------       --------------  -----   
+ 0   SITE_ID      395 non-null    category
+ 1   PRIORFRAC    395 non-null    category
+ 2   AGE          395 non-null    int64   
+ 3   WEIGHT       395 non-null    float64 
+ 4   HEIGHT       395 non-null    int64   
+ 5   PREMENO      395 non-null    category
+ 6   MOMFRAC      395 non-null    category
+ 7   ARMASSIST    395 non-null    category
+ 8   SMOKE        395 non-null    category
+ 9   RATERISK     395 non-null    category
+ 10  SITE_ID_1    395 non-null    float64 
+ 11  SITE_ID_2    395 non-null    float64 
+ 12  SITE_ID_3    395 non-null    float64 
+ 13  SITE_ID_4    395 non-null    float64 
+ 14  SITE_ID_5    395 non-null    float64 
+ 15  SITE_ID_6    395 non-null    float64 
+ 16  PRIORFRAC_0  395 non-null    float64 
+ 17  PRIORFRAC_1  395 non-null    float64 
+ 18  PREMENO_0    395 non-null    float64 
+ 19  PREMENO_1    395 non-null    float64 
+ 20  MOMFRAC_0    395 non-null    float64 
+ 21  MOMFRAC_1    395 non-null    float64 
+ 22  ARMASSIST_0  395 non-null    float64 
+ 23  ARMASSIST_1  395 non-null    float64 
+ 24  SMOKE_0      395 non-null    float64 
+ 25  SMOKE_1      395 non-null    float64 
+ 26  RATERISK_1   395 non-null    float64 
+ 27  RATERISK_2   395 non-null    float64 
+ 28  RATERISK_3   395 non-null    float64 
+dtypes: category(7), float64(20), int64(2)
+memory usage: 74.6 KB</code></pre>
+</div>
+</div>
+<p>As we end preprocessing we now drop the original categorical inputs</p>
+<div class="cell" data-execution_count="192">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>XTR.drop(columns<span class="op">=</span>cat_inputs, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="preproc-step-7-check-out-for-class-imbalances" class="level1 unnumbered unlisted">
+<h1 class="unnumbered unlisted">2 Preproc; Step 7 : Check out for Class Imbalances</h1>
+<p>We look at the relative frequencies of the classes for the output variable in training, that is <code>YTR</code>.</p>
+<div class="cell" data-execution_count="193">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>YTR.value_counts(normalize<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="193">
+<pre><code>0    0.756962
+1    0.243038
+Name: FRACTURE, dtype: float64</code></pre>
+</div>
+</div>
+<p>This 76% vs 24% imbalance can be considered as moderate. We can still proceed without turning to sampling methods, but in situations like this we recommend trying at least one sampling method to see how much of an impact it has over performance. We will return to this at the end of this document.</p>
+</section>
+<section id="preprocessing-pipeline" class="level1">
+<h1>Preprocessing Pipeline</h1>
+<p>After all the preceding work we are ready to create a preprocessing pipeline and apply it to the data. The pipeline will apply:</p>
+<ul>
+<li>scaling and a BoxCox power transformation to the numerical variables</li>
+<li>and will let the factors pass through without being altered.</li>
+</ul>
+<p>We begin by importing the required functions:</p>
+<div class="cell" data-execution_count="194">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler, PowerTransformer</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We define the transformation for numerical variables:</p>
+<div class="cell" data-execution_count="195">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>num_transformer <span class="op">=</span> Pipeline(</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>    steps<span class="op">=</span>[(<span class="st">"boxcox"</span>, PowerTransformer(method<span class="op">=</span><span class="st">'box-cox'</span>)), </span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>           (<span class="st">"scaler"</span>, StandardScaler())]</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we use <code>ColumnTransformer</code> and we we use the string <code>"passthrough"</code> to indicate that the categorical inputs are not transformed.</p>
+<div class="cell" data-execution_count="196">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>preprocessor <span class="op">=</span> ColumnTransformer(</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>    transformers<span class="op">=</span>[</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"num"</span>, num_transformer, num_inputs),</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"cat"</span>, <span class="st">"passthrough"</span>, ohe_inputs),</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We are now ready to define the pipeline named <code>prep</code>.</p>
+<div class="cell" data-execution_count="197">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>preproc_pipe <span class="op">=</span> Pipeline(steps<span class="op">=</span>[(<span class="st">'prep'</span>, preprocessor)])</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>preproc_pipe.set_output(transform<span class="op">=</span><span class="st">"pandas"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="197">
+<style>#sk-container-id-2 {color: black;}#sk-container-id-2 pre{padding: 0;}#sk-container-id-2 div.sk-toggleable {background-color: white;}#sk-container-id-2 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-2 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-2 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-2 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-2 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-2 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-2 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-2 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-2 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-2 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-2 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-2 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-2 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-2 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-2 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-2 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-2 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-2 div.sk-item {position: relative;z-index: 1;}#sk-container-id-2 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-2 div.sk-item::before, #sk-container-id-2 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-2 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-2 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-2 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-2 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-2 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-2 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-2 div.sk-label-container {text-align: center;}#sk-container-id-2 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-2 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Pipeline(steps=[('prep',
+                 ColumnTransformer(transformers=[('num',
+                                                  Pipeline(steps=[('boxcox',
+                                                                   PowerTransformer(method='box-cox')),
+                                                                  ('scaler',
+                                                                   StandardScaler())]),
+                                                  ['AGE', 'HEIGHT', 'WEIGHT']),
+                                                 ('cat', 'passthrough',
+                                                  ['SITE_ID_1', 'SITE_ID_2',
+                                                   'SITE_ID_3', 'SITE_ID_4',
+                                                   'SITE_ID_5', 'SITE_ID_6',
+                                                   'PRIORFRAC_0', 'PRIORFRAC_1',
+                                                   'PREMENO_0', 'PREMENO_1',
+                                                   'MOMFRAC_0', 'MOMFRAC_1',
+                                                   'ARMASSIST_0', 'ARMASSIST_1',
+                                                   'SMOKE_0', 'SMOKE_1',
+                                                   'RATERISK_1', 'RATERISK_2',
+                                                   'RATERISK_3'])]))])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-8" type="checkbox"><label for="sk-estimator-id-8" class="sk-toggleable__label sk-toggleable__label-arrow">Pipeline</label><div class="sk-toggleable__content"><pre>Pipeline(steps=[('prep',
+                 ColumnTransformer(transformers=[('num',
+                                                  Pipeline(steps=[('boxcox',
+                                                                   PowerTransformer(method='box-cox')),
+                                                                  ('scaler',
+                                                                   StandardScaler())]),
+                                                  ['AGE', 'HEIGHT', 'WEIGHT']),
+                                                 ('cat', 'passthrough',
+                                                  ['SITE_ID_1', 'SITE_ID_2',
+                                                   'SITE_ID_3', 'SITE_ID_4',
+                                                   'SITE_ID_5', 'SITE_ID_6',
+                                                   'PRIORFRAC_0', 'PRIORFRAC_1',
+                                                   'PREMENO_0', 'PREMENO_1',
+                                                   'MOMFRAC_0', 'MOMFRAC_1',
+                                                   'ARMASSIST_0', 'ARMASSIST_1',
+                                                   'SMOKE_0', 'SMOKE_1',
+                                                   'RATERISK_1', 'RATERISK_2',
+                                                   'RATERISK_3'])]))])</pre></div></div></div><div class="sk-serial"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-9" type="checkbox"><label for="sk-estimator-id-9" class="sk-toggleable__label sk-toggleable__label-arrow">prep: ColumnTransformer</label><div class="sk-toggleable__content"><pre>ColumnTransformer(transformers=[('num',
+                                 Pipeline(steps=[('boxcox',
+                                                  PowerTransformer(method='box-cox')),
+                                                 ('scaler', StandardScaler())]),
+                                 ['AGE', 'HEIGHT', 'WEIGHT']),
+                                ('cat', 'passthrough',
+                                 ['SITE_ID_1', 'SITE_ID_2', 'SITE_ID_3',
+                                  'SITE_ID_4', 'SITE_ID_5', 'SITE_ID_6',
+                                  'PRIORFRAC_0', 'PRIORFRAC_1', 'PREMENO_0',
+                                  'PREMENO_1', 'MOMFRAC_0', 'MOMFRAC_1',
+                                  'ARMASSIST_0', 'ARMASSIST_1', 'SMOKE_0',
+                                  'SMOKE_1', 'RATERISK_1', 'RATERISK_2',
+                                  'RATERISK_3'])])</pre></div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-10" type="checkbox"><label for="sk-estimator-id-10" class="sk-toggleable__label sk-toggleable__label-arrow">num</label><div class="sk-toggleable__content"><pre>['AGE', 'HEIGHT', 'WEIGHT']</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-11" type="checkbox"><label for="sk-estimator-id-11" class="sk-toggleable__label sk-toggleable__label-arrow">PowerTransformer</label><div class="sk-toggleable__content"><pre>PowerTransformer(method='box-cox')</pre></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-12" type="checkbox"><label for="sk-estimator-id-12" class="sk-toggleable__label sk-toggleable__label-arrow">StandardScaler</label><div class="sk-toggleable__content"><pre>StandardScaler()</pre></div></div></div></div></div></div></div></div><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-13" type="checkbox"><label for="sk-estimator-id-13" class="sk-toggleable__label sk-toggleable__label-arrow">cat</label><div class="sk-toggleable__content"><pre>['SITE_ID_1', 'SITE_ID_2', 'SITE_ID_3', 'SITE_ID_4', 'SITE_ID_5', 'SITE_ID_6', 'PRIORFRAC_0', 'PRIORFRAC_1', 'PREMENO_0', 'PREMENO_1', 'MOMFRAC_0', 'MOMFRAC_1', 'ARMASSIST_0', 'ARMASSIST_1', 'SMOKE_0', 'SMOKE_1', 'RATERISK_1', 'RATERISK_2', 'RATERISK_3']</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-14" type="checkbox"><label for="sk-estimator-id-14" class="sk-toggleable__label sk-toggleable__label-arrow">passthrough</label><div class="sk-toggleable__content"><pre>passthrough</pre></div></div></div></div></div></div></div></div></div></div></div></div>
+</div>
+</div>
+<p>Finally we apply this pipeline to the data with the <code>fit_transform</code> method:</p>
+<div class="cell" data-execution_count="198">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>preproc_XTR <span class="op">=</span> preproc_pipe.fit_transform(XTR)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>preproc_XTR.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="198">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">num__AGE</th>
+<th data-quarto-table-cell-role="th">num__HEIGHT</th>
+<th data-quarto-table-cell-role="th">num__WEIGHT</th>
+<th data-quarto-table-cell-role="th">cat__SITE_ID_1</th>
+<th data-quarto-table-cell-role="th">cat__SITE_ID_2</th>
+<th data-quarto-table-cell-role="th">cat__SITE_ID_3</th>
+<th data-quarto-table-cell-role="th">cat__SITE_ID_4</th>
+<th data-quarto-table-cell-role="th">cat__SITE_ID_5</th>
+<th data-quarto-table-cell-role="th">cat__SITE_ID_6</th>
+<th data-quarto-table-cell-role="th">cat__PRIORFRAC_0</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">cat__PREMENO_1</th>
+<th data-quarto-table-cell-role="th">cat__MOMFRAC_0</th>
+<th data-quarto-table-cell-role="th">cat__MOMFRAC_1</th>
+<th data-quarto-table-cell-role="th">cat__ARMASSIST_0</th>
+<th data-quarto-table-cell-role="th">cat__ARMASSIST_1</th>
+<th data-quarto-table-cell-role="th">cat__SMOKE_0</th>
+<th data-quarto-table-cell-role="th">cat__SMOKE_1</th>
+<th data-quarto-table-cell-role="th">cat__RATERISK_1</th>
+<th data-quarto-table-cell-role="th">cat__RATERISK_2</th>
+<th data-quarto-table-cell-role="th">cat__RATERISK_3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">184</td>
+<td>-1.097607</td>
+<td>0.978387</td>
+<td>0.942011</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">149</td>
+<td>-1.097607</td>
+<td>-0.773830</td>
+<td>-0.365497</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">182</td>
+<td>-0.798863</td>
+<td>-0.593650</td>
+<td>-0.365497</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>...</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">464</td>
+<td>-1.418504</td>
+<td>-0.593650</td>
+<td>0.828926</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>...</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">110</td>
+<td>0.825443</td>
+<td>0.978387</td>
+<td>-0.106228</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>...</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 22 columns</p>
+</div>
+</div>
+</div>
+<p>Note the names of the variables in the transformed data set.</p>
+<p>Let us check if the transformed numerical variables seem closer to being normally distributed. We plot their densities:</p>
+<div class="cell" data-execution_count="203">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>)  <span class="co"># create figure and axes</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col, ax <span class="kw">in</span> <span class="bu">zip</span>(preproc_XTR.iloc[:, <span class="dv">0</span>:<span class="dv">3</span>], axes):  <span class="co"># boxplot for each factor inpput</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>    sns.kdeplot(data<span class="op">=</span>preproc_XTR.iloc[:, <span class="dv">0</span>:<span class="dv">3</span>], x <span class="op">=</span> col, ax<span class="op">=</span>ax) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="2_1_LabPractice_GLOWsolution_files/figure-html/cell-34-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Do not worry too much about the <em>noise</em> introduced by the transformation (which is clearly visible in the <code>num_AGE</code> density curve). The important thing here is that the symmetry of the distributions has clearly increased and their scales are similar.</p>
+<p>Let us also check that the numeric inputs have been really standardized. Check the <code>mean</code> and <code>std</code> rows in the putput of describe,</p>
+<div class="cell" data-execution_count="207">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>preproc_XTR.iloc[:, <span class="dv">0</span>:<span class="dv">3</span>].describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="207">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">num__AGE</th>
+<th data-quarto-table-cell-role="th">num__HEIGHT</th>
+<th data-quarto-table-cell-role="th">num__WEIGHT</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">count</td>
+<td>3.950000e+02</td>
+<td>3.950000e+02</td>
+<td>3.950000e+02</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">mean</td>
+<td>-3.372829e-17</td>
+<td>-1.798842e-17</td>
+<td>2.360981e-17</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">std</td>
+<td>1.001268e+00</td>
+<td>1.001268e+00</td>
+<td>1.001268e+00</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">min</td>
+<td>-1.764061e+00</td>
+<td>-2.449204e+00</td>
+<td>-2.994788e+00</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">25%</td>
+<td>-9.456097e-01</td>
+<td>-7.738303e-01</td>
+<td>-6.890385e-01</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">50%</td>
+<td>-1.504923e-02</td>
+<td>1.158252e-01</td>
+<td>-4.465291e-02</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">75%</td>
+<td>9.174160e-01</td>
+<td>6.365077e-01</td>
+<td>7.110224e-01</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">max</td>
+<td>1.980091e+00</td>
+<td>2.467740e+00</td>
+<td>2.398689e+00</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<section id="applying-the-preprocessing-pipeline-to-the-test-set" class="level3">
+<h3 class="anchored" data-anchor-id="applying-the-preprocessing-pipeline-to-the-test-set">Applying the Preprocessing Pipeline to the Test Set</h3>
+<p>This is straightforward.</p>
+<div class="cell" data-execution_count="208">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>preproc_XTS <span class="op">=</span> preproc_pipe.fit_transform(XTS)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>preproc_XTS.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="208">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">num__AGE</th>
+<th data-quarto-table-cell-role="th">num__HEIGHT</th>
+<th data-quarto-table-cell-role="th">num__WEIGHT</th>
+<th data-quarto-table-cell-role="th">cat__SITE_ID_1</th>
+<th data-quarto-table-cell-role="th">cat__SITE_ID_2</th>
+<th data-quarto-table-cell-role="th">cat__SITE_ID_3</th>
+<th data-quarto-table-cell-role="th">cat__SITE_ID_4</th>
+<th data-quarto-table-cell-role="th">cat__SITE_ID_5</th>
+<th data-quarto-table-cell-role="th">cat__SITE_ID_6</th>
+<th data-quarto-table-cell-role="th">cat__PRIORFRAC_0</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">cat__PREMENO_1</th>
+<th data-quarto-table-cell-role="th">cat__MOMFRAC_0</th>
+<th data-quarto-table-cell-role="th">cat__MOMFRAC_1</th>
+<th data-quarto-table-cell-role="th">cat__ARMASSIST_0</th>
+<th data-quarto-table-cell-role="th">cat__ARMASSIST_1</th>
+<th data-quarto-table-cell-role="th">cat__SMOKE_0</th>
+<th data-quarto-table-cell-role="th">cat__SMOKE_1</th>
+<th data-quarto-table-cell-role="th">cat__RATERISK_1</th>
+<th data-quarto-table-cell-role="th">cat__RATERISK_2</th>
+<th data-quarto-table-cell-role="th">cat__RATERISK_3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">297</td>
+<td>-0.795692</td>
+<td>0.459560</td>
+<td>-0.795238</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">407</td>
+<td>1.785208</td>
+<td>-0.133108</td>
+<td>-0.605639</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">133</td>
+<td>0.786101</td>
+<td>0.594333</td>
+<td>1.467583</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">427</td>
+<td>0.786101</td>
+<td>0.023791</td>
+<td>-1.754066</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">438</td>
+<td>-0.149840</td>
+<td>-0.133108</td>
+<td>0.425384</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>...</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 22 columns</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="optional-exercise.-dealing-with-imbalance." class="level1">
+<h1>Optional Exercise. Dealing with Imbalance.</h1>
+<p>Read this example of how to deal with imbalance using the <code>SMOTE</code> sampling methd:</p>
+<p><a href="https://machinelearningmastery.com/smote-oversampling-for-imbalanced-classification/">https://machinelearningmastery.com/smote-oversampling-for-imbalanced-classification/</a></p>
+<p>Then install the <a href="https://imbalanced-learn.org/stable/">Imbalanced-learn</a> library and use it to add the <code>SMOTE</code> subsampling method to our preprocessing pipeline.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
